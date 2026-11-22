@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trova il tuo posto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --night:#1a110c; --velvet:#24170f; --rule:#4a3426; --ink:#f1ead9; --muted:#b9a993; --gold:#b8875a; --gold-soft:#7a5a3d;
+  --f-display:"Cormorant Garamond",Garamond,"Times New Roman",serif; --f-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark}
+html{background:var(--night)}
+[hidden]{display:none!important}
+body{margin:0;background:radial-gradient(ellipse at 50% -15%,#3a2618 0%,var(--night) 62%) fixed,var(--night);color:var(--ink);font:16px/1.5 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 40px;min-height:100vh}
+main{max-width:460px;margin:0 auto;display:grid;gap:22px;padding-top:34px}
+.hd{display:grid;justify-items:center;gap:10px;text-align:center}
+.logo{width:70px;height:auto;color:var(--ink);filter:drop-shadow(0 0 22px rgb(184 135 90 / .35))}
+.brand{font:600 11px/1 var(--f-body);letter-spacing:.42em;text-transform:uppercase;color:var(--gold);padding-left:.42em}
+h1{margin:8px 0 0;text-align:center;font:500 40px/1.05 var(--f-display);text-wrap:balance}
+h1 em{color:var(--gold)}
+.sub{margin:-2px 0 0;text-align:center;color:var(--muted);font-size:14px}
+label{font:600 11px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.field{display:grid;gap:8px}
+input{width:100%;box-sizing:border-box;background:var(--velvet);border:1px solid var(--gold-soft);color:var(--ink);font:500 18px var(--f-body);padding:14px;border-radius:6px}
+input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+input:disabled{opacity:.6}
+.hint{color:var(--muted);font-size:13px;margin:0}
+.list{display:grid;gap:8px}
+.list button{all:unset;cursor:pointer;display:flex;justify-content:space-between;gap:10px;background:var(--velvet);border:1px solid var(--rule);padding:12px 14px;border-radius:6px;font-size:16px}
+.list button span{color:var(--muted);font-size:13px;white-space:nowrap}
+.list button:focus-visible{outline:2px solid var(--gold)}
+.card{background:linear-gradient(160deg,#2b1f19,#1a1210);border:1px solid var(--gold-soft);border-radius:6px;padding:22px 20px;display:grid;gap:6px;text-align:center}
+.card .k{font:600 10px/1 var(--f-body);letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.card .nm{font:500 34px/1.05 var(--f-display);margin:6px 0 4px}
+.card .tv{font:italic 500 26px/1.2 var(--f-display)}
+.card .ps{font:600 12px/1.4 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-top:4px}
+.how{margin:0;color:var(--ink);font-size:15px}
+.how b{color:var(--gold);font-weight:600}
+.map{background:var(--velvet);border:1px solid var(--rule);border-radius:6px;padding:10px}
+.map svg{display:block;width:100%;height:auto;max-width:100%}
+.verse{margin:0;text-align:center;font:italic 500 18px/1.4 var(--f-display);color:var(--muted)}
+.again{all:unset;cursor:pointer;justify-self:center;color:var(--gold);font-size:14px;border-bottom:1px solid var(--gold-soft)}
+.again:focus-visible{outline:2px solid var(--gold)}
+@media (prefers-reduced-motion:no-preference){.path{stroke-dasharray:.35 .25;animation:walk 1.2s linear infinite}@keyframes walk{to{stroke-dashoffset:-1.2}}.me{animation:pulse 1.6s ease-in-out infinite}@keyframes pulse{50%{r:.55}}}
+</style>
+</head>
+<body>
+<main>
+  <header class="hd">
+    <svg class="logo" viewBox="300 165 240 265" aria-hidden="true"><path fill="currentColor" d="M 455.800781 310.046875 L 428.285156 219.945312 C 424.175781 206.574219 420.339844 195.871094 416.785156 187.84375 L 378.179688 310.046875 Z M 307.140625 424.214844 C 307.140625 423.726562 307.414062 423.484375 307.957031 423.484375 C 319.457031 422.996094 328.628906 419.351562 335.472656 412.542969 C 342.320312 405.734375 348.753906 393.089844 354.773438 374.605469 L 375.308594 310.046875 L 415.140625 184.929688 C 412.125 179.339844 408.570312 175.746094 404.460938 174.167969 C 400.351562 172.589844 394.195312 171.554688 385.988281 171.070312 C 385.433594 171.070312 385.160156 170.824219 385.160156 170.339844 C 385.160156 169.851562 385.433594 169.609375 385.988281 169.609375 L 415.550781 169.972656 L 429.511719 169.609375 L 491.523438 374.242188 C 495.632812 388.101562 499.324219 398.320312 502.613281 404.886719 C 505.894531 411.453125 509.796875 416.074219 514.3125 418.746094 C 518.832031 421.417969 525.332031 422.996094 533.820312 423.484375 C 534.367188 423.484375 534.640625 423.726562 534.640625 424.214844 C 534.640625 424.703125 534.367188 424.945312 533.820312 424.945312 C 528.894531 424.945312 525.058594 424.828125 522.320312 424.582031 L 499.324219 424.214844 L 470.582031 424.582031 C 467.019531 424.828125 462.5 424.945312 457.027344 424.945312 C 456.480469 424.945312 456.207031 424.703125 456.207031 424.214844 C 456.207031 423.726562 456.480469 423.484375 457.027344 423.484375 C 466.882812 422.996094 473.796875 421.601562 477.769531 419.292969 C 481.734375 416.984375 483.722656 413.273438 483.722656 408.164062 C 483.722656 403.304688 481.667969 394.550781 477.5625 381.898438 L 456.207031 312.230469 L 377.359375 312.230469 L 354.363281 384.820312 C 351.628906 393.820312 350.261719 400.503906 350.261719 404.878906 C 350.261719 410.964844 352.582031 415.464844 357.238281 418.378906 C 361.890625 421.300781 369.691406 422.996094 380.648438 423.484375 C 381.195312 423.484375 381.46875 423.726562 381.46875 424.214844 C 381.46875 424.703125 381.195312 424.945312 380.648438 424.945312 C 375.171875 424.945312 370.789062 424.828125 367.507812 424.582031 L 341.226562 424.214844 L 319.046875 424.582031 C 316.589844 424.828125 312.894531 424.945312 307.957031 424.945312 C 307.414062 424.945312 307.140625 424.703125 307.140625 424.214844"/></svg>
+    <div class="brand">Alberto · 18</div>
+    <h1>Trova <em>il tuo posto</em></h1>
+    <p class="sub">29 novembre 2026</p>
+  </header>
+  <section id="search" class="field">
+    <label for="q">Scrivi nome o cognome</label>
+    <input id="q" type="search" autocomplete="off" autocapitalize="words" placeholder="Es. Rossi Mario" disabled>
+    <p class="hint" id="hint">Caricamento della lista…</p>
+    <div class="list" id="list"></div>
+  </section>
+  <section id="result" hidden style="display:grid;gap:16px">
+    <div class="card"><div class="k">Il tuo posto</div><div class="nm" id="rn"></div><div class="tv" id="rt"></div><div class="ps" id="rp"></div></div>
+    <p class="how" id="how"></p>
+    <div class="map" id="mapbox"><svg id="map" viewBox="-1.3 -1.6 21.66 30.4" role="img" aria-label="Piantina della sala con il tuo posto e il percorso dall'ingresso"></svg></div>
+    <p class="verse">«Dubita che di fuoco siano gli astri…»</p>
+    <button class="again" id="again" type="button">Cerca un altro nome</button>
+  </section>
+</main>
+<script>
+/* Sala Giunone B (layout 14/11). Coordinate in metri: X = distanza dalla parete mobile (0) verso le finestre (19,06),
+   Y = distanza dalla parete del palco (0) verso gli ingressi (26,50). Guardando il palco la parete mobile è a sinistra. */
+const W=19.06, D=26.5, AX=8.53;
+const TAB={ // tavoli numerati da sinistra verso destra guardando il palco
+  1:{yc:2.10, d0:9.20, d1:14.20, c:'#cdb9e6'},
+  2:{yc:2.10, d0:14.90,d1:24.90, c:'#d1b37c'},
+  3:{yc:5.015,d0:9.20, d1:24.20, c:'#b9a0d6'},
+  4:{yc:8.53, d0:15.42,d1:20.42, c:'#f1ead9', onore:true},
+  5:{yc:12.045,d0:9.20,d1:24.20, c:'#d3906c'},
+  6:{yc:14.96,d0:9.20, d1:24.20, c:'#8fb0c4'}};
+const CAP0={1:15,2:28,3:43,4:14,5:43,6:42};
+const DOORS=[[1.46,3.26],[6.25,8.05],[11.05,12.85],[14.75,16.55]], OPEN=[1,2];   // aperte solo le due porte centrali
+let CAP=CAP0, G=[];
+const norm=x=>x.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z\s]/gi,' ').toLowerCase().replace(/\s+/g,' ').trim();
+const q=document.getElementById('q'),list=document.getElementById('list'),hint=document.getElementById('hint');
+function ready(json){
+  const d=typeof json==='string'?JSON.parse(json):json;
+  CAP=Object.assign({},CAP0,d.cap||{});
+  G=(d.g||[]).filter(r=>TAB[r[1]]).map(([n,t,s])=>({n,t:+t,s:+s,k:norm(n)}));
+  q.disabled=false; hint.textContent='Bastano le prime tre lettere.'; if(q.value) search();}
+function fail(){hint.textContent='La lista non si è caricata. Ricarica la pagina, oppure chiedi alla hostess.';}
+function search(){const v=norm(q.value);list.innerHTML='';
+  if(v.length<3){hint.textContent='Bastano le prime tre lettere.';return;}
+  const parts=v.split(' ');const m=G.filter(g=>parts.every(p=>g.k.split(' ').some(w=>w.startsWith(p))));
+  if(!m.length){hint.textContent='Nessun nome trovato. Prova con il cognome, oppure chiedi alla hostess.';return;}
+  if(m.length>8){hint.textContent='Troppi nomi: aggiungi qualche lettera o il cognome.';return;}
+  hint.textContent='Tocca il tuo nome.';
+  m.forEach(g=>{const b=document.createElement('button');b.type='button';b.innerHTML=`${esc(g.n)}<span>Tavolo ${g.t}</span>`;b.onclick=()=>show(g);list.appendChild(b);});}
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+q.addEventListener('input',search);
+const NS=['http:','','www.w3.org','2000','svg'].join('/');
+const el=(n,a,p)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e;};
+// posizione della seduta: lato sinistro 1..n dal palco verso l'ingresso, lato destro n+1..2n anch'esso dal palco
+// (n+1 di fronte all'1). Se i posti sono dispari, l'ultimo è il capotavola, in fondo al tavolo dal lato dell'ingresso.
+function seat(t,s){const C=CAP[t], n=Math.floor(C/2), T=TAB[t], pitch=(T.d1-T.d0)/n;
+  if(C%2===1 && s===C) return {head:true, left:false, nth:0, x:T.yc, y:T.d1+.42, n};
+  const left=s<=n, i=left?s-1:s-n-1;              // i = 0 per il posto più vicino al palco
+  return {left, nth:i+1, x:T.yc+(left?-0.65:0.65), y:T.d0+pitch*(i+.5), n};}
+function show(g){
+  const svg=document.getElementById('map');svg.innerHTML='';
+  const R=(x,y,w,h,a)=>el('rect',Object.assign({x,y,width:w,height:h},a),svg);
+  const tx=(x,y,s,a={})=>{const e=el('text',Object.assign({x,y,fill:'#a8998b','font-size':.62,'font-family':'Instrument Sans, sans-serif','text-anchor':'middle'},a),svg);e.textContent=s;return e;};
+  R(0,0,W,D,{fill:'#241914',stroke:'#5a4536','stroke-width':.1});
+  tx(W/2,-0.55,'PARETE DEL PALCO',{'font-size':.5});
+  tx(-0.55,D/2,'PARETE MOBILE',{'font-size':.5,transform:`rotate(-90 -0.55 ${D/2})`});
+  tx(W+0.55,D/2,'FINESTRE',{'font-size':.5,transform:`rotate(90 ${W+0.55} ${D/2})`});
+  // palco, ledwall, passerella, bar
+  R(2.53,2.20,12,6,{fill:'#120d0b',stroke:'#6b5643','stroke-width':.08});
+  R(AX-2.5,3.62,5,.14,{fill:'#d6b46e',opacity:.8});
+  tx(AX,6.0,'PALCO',{fill:'#d6b46e','font-size':.8});
+  R(AX-1.5,8.5,3,4,{fill:'#1d1a1c',stroke:'#b9bec4','stroke-width':.06});
+  el('path',{d:`M ${AX-0.39} ${23.27-1.68} A 1.725 1.725 0 1 0 ${AX+0.39} ${23.27-1.68}`,fill:'none',stroke:'#8a6b4a','stroke-width':.5},svg);
+  tx(AX,23.5,'BAR',{'font-size':.55});
+  R(15.955,4.46,1.73,.73,{fill:'#3a2a20',stroke:'#8a6b4a','stroke-width':.05});
+  // tavoli e posti
+  for(const t in TAB){const T=TAB[t],on=+t===g.t,n=Math.floor(CAP[t]/2),p=(T.d1-T.d0)/n;
+    R(T.yc-.5,T.d0,1,T.d1-T.d0,{fill:T.c,'fill-opacity':on?.55:.14,stroke:T.c,'stroke-width':on?.12:.05,rx:.05});
+    for(let i=0;i<n;i++)[-.65,.65].forEach(o=>el('circle',{cx:T.yc+o,cy:T.d0+p*(i+.5),r:.17,fill:T.c,opacity:on?.55:.25},svg));
+    if(CAP[t]%2===1) el('circle',{cx:T.yc,cy:T.d1+.42,r:.17,fill:T.c,opacity:on?.55:.25},svg);
+    tx(T.yc,T.d0-.35,'T'+t,{'font-size':.55,fill:T.c,opacity:on?1:.7});}
+  // porte
+  DOORS.forEach(([a,b],i)=>{const o=OPEN.includes(i);R(a,D-.15,b-a,.3,{fill:o?'#d6b46e':'#5a4536',opacity:o?.9:.7});if(!o)tx((a+b)/2,D+.95,'chiusa',{'font-size':.45,fill:'#6b5643'});});
+  tx(W/2,D+1.9,'INGRESSO DALLE PORTE CENTRALI',{'font-size':.6,'letter-spacing':'.05'});
+  const T=TAB[g.t], sp=seat(g.t,g.s), over=g.s>CAP[g.t];
+  document.getElementById('rn').textContent=g.n;
+  const rt=document.getElementById('rt'); rt.textContent='Tavolo '+g.t+(T.onore?' · tavolo d’onore':''); rt.style.color=T.c;
+  const rp=document.getElementById('rp'), how=document.getElementById('how');
+  if(over){rp.textContent='posto da confermare';
+    how.innerHTML=`Il tuo posto al <b>Tavolo ${g.t}</b> è in via di definizione: <b>chiedi alla hostess</b> all’ingresso, ti accompagnerà lei.`;
+  }else{
+    const lato=sp.head?'capotavola':sp.left?'lato sinistro':'lato destro';
+    rp.textContent=sp.head?'capotavola · lato ingresso':lato+' · '+sp.nth+'° posto dal palco';
+    // percorso: porta centrale più vicina → passaggio in fondo sala → corsia lungo il tavolo → posto
+    const lane=T.yc+(sp.left?-1.45:1.45), yb=25.35;
+    let pts;
+    if(T.onore){const out=sp.left?6.36:10.70, yt=21.0;   // il tavolo d'onore si raggiunge girando attorno al bar
+      const door=pick(out); pts=[[door,D],[door,yb],[out,yb],[out,yt],[lane,yt],[lane,sp.y],[sp.x,sp.y]];}
+    else{const door=pick(lane); pts=[[door,D],[door,yb],[lane,yb],[lane,sp.y],[sp.x,sp.y]];}
+    el('polyline',{points:pts.map(p=>p.map(v=>v.toFixed(2)).join(',')).join(' '),fill:'none',stroke:'#d6b46e','stroke-width':.18,'stroke-linecap':'round','stroke-linejoin':'round',class:'path'},svg);
+    el('circle',{cx:sp.x,cy:sp.y,r:.42,fill:'#f2d48a',class:'me'},svg);
+    how.innerHTML=`Entra da una delle due porte centrali e raggiungi il <b>Tavolo ${g.t}</b>${T.onore?', il tavolo d’onore davanti alla passerella: passa accanto al bar':''}. ${sp.head?'Il tuo posto è a <b>capotavola</b>, in fondo al tavolo dal lato dell’ingresso':`Guardando il palco, il tuo posto è sul <b>${lato}</b> del tavolo, il <b>${sp.nth}° partendo dal palco</b>`}: troverai il segnaposto con il tuo nome.`;}
+  document.getElementById('mapbox').hidden=over;
+  document.getElementById('search').hidden=true;document.getElementById('result').hidden=false;window.scrollTo(0,0);}
+function pick(y){const c=OPEN.map(i=>(DOORS[i][0]+DOORS[i][1])/2);return c.reduce((a,b)=>Math.abs(b-y)<Math.abs(a-y)?b:a);}
+document.getElementById('again').onclick=()=>{document.getElementById('result').hidden=true;document.getElementById('search').hidden=false;q.value='';list.innerHTML='';hint.textContent='Bastano le prime tre lettere.';q.focus();};
+const EXEC='https://script.google.com/macros/s/AKfycbwNBfB2H3IdQ6898nzpIge6bq6b0YiYGV1YetnuQ7WnImXbeusl8go9lZW0H2GtDLG_/exec';
+function load(){
+  fetch(EXEC+'?json=1&t='+Date.now(),{credentials:'omit',cache:'no-store'})
+    .then(r=>{if(!r.ok)throw new Error(r.status);return r.json();})
+    .then(ready).catch(()=>{setTimeout(()=>fetch(EXEC+'?json=1&t='+Date.now(),{credentials:'omit'}).then(r=>r.json()).then(ready).catch(fail),1500);});}
+load();
+</script>
+</body>
+</html>
