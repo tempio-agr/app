@@ -81,7 +81,10 @@ const TAB={ // tavoli numerati da sinistra verso destra guardando il palco
   4:{yc:8.53, d0:15.42,d1:20.42, c:'#f1ead9', onore:true},
   5:{yc:12.045,d0:9.20,d1:24.20, c:'#d3906c'},
   6:{yc:14.96,d0:9.20, d1:24.20, c:'#8fb0c4'}};
-const CAP0={1:15,2:28,3:43,4:14,5:43,6:42};
+const CAP0={1:13,2:28,3:42,4:14,5:43,6:42};
+// tavolo 1: 13 posti, manca la sedia più vicina al palco sul lato sinistro; sinistra 1-6, destra 7-13
+const LAY={1:{n:7,L:6,off:1}};
+const GEO=t=>LAY[t]?LAY[t].n*2:CAP[t];
 const DOORS=[[1.46,3.26],[6.25,8.05],[11.05,12.85],[14.75,16.55]], OPEN=[1,2];   // aperte solo le due porte centrali
 let CAP=CAP0, G=[];
 const norm=x=>x.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z\s]/gi,' ').toLowerCase().replace(/\s+/g,' ').trim();
@@ -105,7 +108,10 @@ const NS=['http:','','www.w3.org','2000','svg'].join('/');
 const el=(n,a,p)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e;};
 // posizione della seduta: lato sinistro 1..n dal palco verso l'ingresso, lato destro n+1..2n anch'esso dal palco
 // (n+1 di fronte all'1). Se i posti sono dispari, l'ultimo è il capotavola, in fondo al tavolo dal lato dell'ingresso.
-function seat(t,s){const C=CAP[t], n=Math.floor(C/2), T=TAB[t], pitch=(T.d1-T.d0)/n;
+function seat(t,s){const T=TAB[t];
+  if(LAY[t]){const Y=LAY[t],pitch=(T.d1-T.d0)/Y.n,left=s<=Y.L,i=left?s-1+Y.off:s-Y.L-1;
+    return {left,nth:left?s:i+1,x:T.yc+(left?-0.65:0.65),y:T.d0+pitch*(i+.5),n:Y.n};}
+  const C=GEO(t), n=Math.floor(C/2), pitch=(T.d1-T.d0)/n;
   if(C%2===1 && s===C) return {head:true, left:false, nth:0, x:T.yc, y:T.d1+.42, n};
   const left=s<=n, i=left?s-1:s-n-1;              // i = 0 per il posto più vicino al palco
   return {left, nth:i+1, x:T.yc+(left?-0.65:0.65), y:T.d0+pitch*(i+.5), n};}
@@ -126,10 +132,10 @@ function show(g){
   tx(AX,23.5,'BAR',{'font-size':.55});
   R(15.955,4.46,1.73,.73,{fill:'#3a2a20',stroke:'#8a6b4a','stroke-width':.05});
   // tavoli e posti
-  for(const t in TAB){const T=TAB[t],on=+t===g.t,n=Math.floor(CAP[t]/2),p=(T.d1-T.d0)/n;
+  for(const t in TAB){const T=TAB[t],on=+t===g.t,n=Math.floor(GEO(t)/2),p=(T.d1-T.d0)/n,Y=LAY[t];
     R(T.yc-.5,T.d0,1,T.d1-T.d0,{fill:T.c,'fill-opacity':on?.55:.14,stroke:T.c,'stroke-width':on?.12:.05,rx:.05});
-    for(let i=0;i<n;i++)[-.65,.65].forEach(o=>el('circle',{cx:T.yc+o,cy:T.d0+p*(i+.5),r:.17,fill:T.c,opacity:on?.55:.25},svg));
-    if(CAP[t]%2===1) el('circle',{cx:T.yc,cy:T.d1+.42,r:.17,fill:T.c,opacity:on?.55:.25},svg);
+    for(let i=0;i<n;i++)[-.65,.65].forEach(o=>{if(Y&&o<0&&i<Y.off)return;el('circle',{cx:T.yc+o,cy:T.d0+p*(i+.5),r:.17,fill:T.c,opacity:on?.55:.25},svg);});
+    if(GEO(t)%2===1) el('circle',{cx:T.yc,cy:T.d1+.42,r:.17,fill:T.c,opacity:on?.55:.25},svg);
     tx(T.yc,T.d0-.35,'T'+t,{'font-size':.55,fill:T.c,opacity:on?1:.7});}
   // porte
   DOORS.forEach(([a,b],i)=>{const o=OPEN.includes(i);R(a,D-.15,b-a,.3,{fill:o?'#d6b46e':'#5a4536',opacity:o?.9:.7});if(!o)tx((a+b)/2,D+.95,'chiusa',{'font-size':.45,fill:'#6b5643'});});
